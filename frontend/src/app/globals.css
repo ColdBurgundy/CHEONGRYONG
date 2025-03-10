@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@import "tailwindcss";
+
+@font-face {
+  font-family: "AllFont";
+  src: url("/fonts/NanumGothic.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "NavbarFont";
+  src: url("/fonts/NanumGothicBold.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "PostFont";
+  src: url("/fonts/MaruBuri-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  /* 여러 개의 폰트 변수 설정 */
+  --font-all: "AllFont", sans-serif;
+  --font-post: "PostFont", sans-serif;
+
+  /* 색상 변수 */
+  --cauBlue: #004c97;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-all);
+}
+
+/* 네비바 전용 폰트 클래스 */
+.navbar-font {
+  font-family: "NavbarFont", sans-serif;
+}
+
+@layer utilities {
+  .text-cauBlue {
+    color: var(--cauBlue);
+  }
+}
