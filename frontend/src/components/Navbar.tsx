@@ -64,17 +64,61 @@ export default function Navbar() {
   };
 
   const menuItems = [
-    { name: "청룡", subItems: ["동아리 소개", "공지사항", "일정"], href: "#" },
-    { name: "팀", subItems: ["운영진", "선수단", "일반부원"], href: "#" },
-    { name: "기록", subItems: ["기록관리", "전력분석"], href: "#" },
+    { 
+      name: "청룡",
+      subItems: [
+        { name: "동아리 소개", href: "/cheongryong/intro" },
+        { name: "공지사항", href: "/cheongryong/notice" },
+        { name: "일정", href: "/cheongryong/schedule" }
+      ] 
+    },
+    { 
+      name: "팀", 
+      subItems: [
+        { name: "운영진", href: "/team/staff" },
+        { name: "선수단", href: "/team/players" },
+        { name: "일반부원", href: "/team/members" }
+      ] 
+    },
+    { 
+      name: "기록",
+      subItems: [
+        { name: "기록관리", href: "/records/stats" },
+        { name: "전력분석", href: "/records/analysis" }
+      ] 
+    }
   ];
+  
 
   const rightMenuItems = [
-    { name: "커뮤니티", subItems: ["활동모습", "자유게시판"], href: "#" },
-    { name: "참고영상", subItems: ["투수", "내야수", "외야수", "작전/주루", "트레이닝"], href: "#" },
-    { name: "Special", subItems: ["운영진", "선수단", "일반부원"], href: "#" },
+    { 
+      name: "커뮤니티",
+      subItems: [
+        { name: "활동모습", href: "/community/activities" },
+        { name: "자유게시판", href: "/community/forum" }
+      ] 
+    },
+    { 
+      name: "참고영상",
+      subItems: [
+        { name: "투수", href: "/reference/pitchers" },
+        { name: "내야수", href: "/reference/infielders" },
+        { name: "외야수", href: "/reference/outfielders" },
+        { name: "작전/주루", href: "/reference/tactics" },
+        { name: "트레이닝", href: "/reference/training" }
+      ] 
+    },
+    { 
+      name: "Special",
+      subItems: [
+        { name: "운영진", href: "/special/staff" },
+        { name: "선수단", href: "/special/players" },
+        { name: "일반부원", href: "/special/members" }
+      ] 
+    }
   ];
-
+  
+  
   const allMenuItems = [...menuItems, ...rightMenuItems];
 
   return (
@@ -93,7 +137,7 @@ export default function Navbar() {
               onMouseEnter={() => handleMouseEnter(item.name)}
               onMouseLeave={handleMouseLeave}
             >
-              <Link href={item.href} className="text-md font-medium relative block overflow-hidden">
+              <Link href={item.href || "#"} className="text-md font-medium relative block overflow-hidden">
                 <span className="nav-item absolute left-0 w-full text-[var(--cauBlue)] opacity-0 transform translate-y-[-100%] group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-350">
                   {item.name}
                 </span>
@@ -126,8 +170,8 @@ export default function Navbar() {
               onMouseEnter={() => handleMouseEnter(item.name)}
               onMouseLeave={handleMouseLeave}
             >
-              <Link href={item.href} className="text-md font-medium relative block overflow-hidden">
-                <span className="nav-item absolute left-0 w-full text-cauBlue opacity-0 transform translate-y-[-100%] group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-350">
+              <Link href={item.href = "#"} className="text-md font-medium relative block overflow-hidden">
+                <span className="nav-item absolute left-0 w-full text-[var(--cauBlue)] opacity-0 transform translate-y-[-100%] group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-350">
                   {item.name}
                 </span>
                 <span className="block group-hover:translate-y-full group-hover:opacity-0 transition-all duration-350">
@@ -140,33 +184,41 @@ export default function Navbar() {
       </div>
 
       {/* ✅ 서브네비바 */}
-      <div
-        className={`absolute left-0 w-full bg-gray-100 shadow-lg overflow-hidden transition-[max-height, opacity] duration-500 ease-in-out 
-          ${ scrollProgress > 0 ? "top-[60px]" : "top-[80px]" } 
-          ${ hoveredMenu ? "opacity-100 max-h-96 py-3" : "opacity-0 max-h-0 py-0"}
-        `}
-        onMouseEnter={handleSubMenuEnter}
-        onMouseLeave={() => setTimeout(() => setHoveredMenu(null), 200)}
-      >
-
-      <div className="flex flex-col items-start px-6 py-3">
-        {allMenuItems.find((menu) => menu.name === hoveredMenu)?.subItems.map((subItem) => (
+      {hoveredMenu && (
+        <div
+          className={`absolute left-0 w-full bg-gray-100 shadow-lg transition-all duration-500 ease-in-out ${
+            scrollProgress > 0 ? "top-[60px]" : "top-[80px]"
+          } opacity-100 visible`}
+          onMouseEnter={() => setHoveredMenu(hoveredMenu)}
+          onMouseLeave={() => setTimeout(() => setHoveredMenu(null), 200)}
+        >
+        <div className="flex flex-col items-start px-6 py-3">
+        {/* ✅ `menuItems` + `rightMenuItems`를 함께 검색하여 서브네비바에 표시 */}
+        {(
+          [...menuItems, ...rightMenuItems].find((menu) => menu.name === hoveredMenu)?.subItems || []
+        ).map((subItem) => (
           <Link
-            key={subItem}
-            href="#"
+            key={subItem.name}  // ✅ key는 subItem.name을 사용
+            href={subItem.href || "#"}  // ✅ href가 없으면 기본값 설정
             className="text-md px-4 py-2 text-gray-800 hover:text-blue-600 transition block"
             style={{
               position: "relative",
               left: `${
-                (menuPositions[hoveredMenu] || 0) - (document.querySelector(".container")?.getBoundingClientRect().left || 0)
+                (menuPositions[hoveredMenu] || 0) -
+                (document.querySelector(".container")?.getBoundingClientRect().left || 0)
               }px`,
             }}
           >
-          {subItem}
+            {subItem.name}
           </Link>
-          ))}
-          </div>
+        ))}
         </div>
+        </div>
+      )}
+
+
+
+
     </nav>
   );
 }
