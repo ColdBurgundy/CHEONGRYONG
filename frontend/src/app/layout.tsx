@@ -1,4 +1,5 @@
-import "./globals.css";
+import "@/styles/globals.css";  // ✅ 새로운 위치에서 import
+import "@/styles/markdown.css"; // ✅ 함께 위치한 markdown.css도 import
 import Header from "@/components/Header"; // ✅ Header 컴포넌트 불러오기
 import Navbar from "@/components/Navbar";
 

@@ -1,13 +1,13 @@
+// backend/src/app.controller.ts
 import { Controller, Get } from '@nestjs/common';
+import { PrismaService } from './prisma/prisma.service';
 
-@Controller('players')  // /players 엔드포인트 생성
+@Controller('players')
 export class AppController {
+  constructor(private readonly prisma: PrismaService) {}
+
   @Get()
-  getPlayers() {
-    return [
-      { id: 1, name: '홍길동', position: '투수' },
-      { id: 2, name: '이순신', position: '포수' },
-      { id: 3, name: '김유신', position: '외야수' },
-    ];
+  async getPlayers() {
+    return this.prisma.player.findMany(); // ✅ MySQL에서 데이터 가져오기
   }
 }
